@@ -17,7 +17,11 @@ def initial_config():
     dir_path = os.getcwd()
     chrome_options2 = Options()
     #chrome_options2.add_argument(r"user-data-dir=" + dir_path + "/profile/whatsapp")
+    chrome_options2.add_argument("--lang=en-US")
     chrome_options2.add_argument("--start-fullscreen")
+    chrome_options2.add_argument("--no-sandbox")
+    chrome_options2.add_argument("--disable-dev-shm-usage")
+
     driver = webdriver.Chrome(options=chrome_options2)         
     url = "https://web.whatsapp.com"
     driver.get(url)
@@ -40,8 +44,14 @@ def verifica_conectado():
         return 200
     except:
         return 500
-        
-        
+
+def screenshot_page():
+    global driver
+
+    # Tirar um screenshot e retornar codificado em base64
+    screenshot_base64 = driver.get_screenshot_as_base64()
+
+    return screenshot_base64                
             
 def getqrcode():
     try:
@@ -171,7 +181,9 @@ def send_message(driver, nome_contato, mensagens_df, text):
         mensagem = text
                 
         # Combinando `contenteditable`, `aria-placeholder`, e `role`
-        message_box = driver.find_element(By.XPATH, "//div[@contenteditable='true' and @aria-placeholder='Digite uma mensagem' and @role='textbox']")
+        message_box = driver.find_element(By.XPATH, "//div[@contenteditable='true' and @aria-placeholder='Type a message' and @role='textbox']")        
+        #message_box = driver.find_element(By.XPATH, "//div[@contenteditable='true' and @aria-placeholder='Digite uma mensagem' and @role='textbox']")        
+        #message_box = driver.find_element(By.CSS_SELECTOR, '.x1hx0egp.x6ikm8r[role="textbox"]')
         # Certifique-se que o elemento está visível
         driver.execute_script("arguments[0].scrollIntoView(true);", message_box)
         time.sleep(0.5)
@@ -179,7 +191,8 @@ def send_message(driver, nome_contato, mensagens_df, text):
         message_box.click()
         message_box.send_keys(mensagem)
         
-        send_button = driver.find_element(By.CSS_SELECTOR, "button[aria-label='Enviar']")
+        #send_button = driver.find_element(By.CSS_SELECTOR, "button[aria-label='Send']")
+        send_button = driver.find_element(By.CLASS_NAME, "x1c4vz4f.x2lah0s.xdl72j9.xfect85.x1iy03kw.x1lfpgzf")
         send_button.click()
         
         

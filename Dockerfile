@@ -60,7 +60,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Expose the Flask port
-EXPOSE 5000
+EXPOSE 8080
 
 # Copy entrypoint script to set up Xvfb and Chrome
 COPY entrypoint.sh /entrypoint.sh

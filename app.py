@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 
 if __name__ == "__main__":    
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=8080)
 
 # Rota para a página inicial
 @app.route('/')
@@ -83,3 +83,7 @@ def insertmessagedataframe():
         whatsapp_scrapper.insert_message_dataframe(nome_contato, mensagem)        
         return whatsapp_scrapper.getmessagesdf()
         
+@app.route('/getpagescreeshot', methods=['get'])
+def getpagescreenshot():
+
+    return jsonify({'code' : whatsapp_scrapper.screenshot_page()})
